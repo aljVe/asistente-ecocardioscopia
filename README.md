@@ -82,6 +82,7 @@ El objetivo principal es agilizar el proceso de documentación post-ecocardiosco
 
 * **Alejandro Venegas Robles**
 * Contacto: `alejandro2196vr@gmail.com`
+* Idea original **Jorge Rubio Gracia**
 
 ## Licencia
 
