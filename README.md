@@ -85,4 +85,4 @@ El objetivo principal es agilizar el proceso de documentación post-ecocardiosco
 
 ## Licencia
 
-Este proyecto está bajo la Licencia [NOMBRE DE LA LICENCIA - ej. MIT]. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
