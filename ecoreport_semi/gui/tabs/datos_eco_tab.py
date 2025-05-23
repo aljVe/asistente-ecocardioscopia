@@ -284,7 +284,7 @@ class DatosEcoTab(QWidget):
         scroll_area.setWidget(self.scroll_content_widget)
         main_tab_layout.addWidget(scroll_area, 2)
         self.vexus_image_label = QLabel()
-        image_path = os.path.join(config.RESOURCES_DIR, "vexus_patterns.png")
+        image_path =config.resource_path("vexus_patterns.png") # Asume que la imagen se llama así
         if os.path.exists(image_path):
             pixmap = QPixmap(image_path)
             if not pixmap.isNull(): self.vexus_image_label.setPixmap(pixmap.scaledToWidth(DatosEcoTab.TARGET_IMAGE_WIDTH, Qt.SmoothTransformation))

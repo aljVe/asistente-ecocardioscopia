@@ -6,13 +6,13 @@ Configuraciones y constantes para la aplicación EcoReport SEMI.
 Valores de referencia basados en el infograma SEMI 'ecoscopia_en_icc_v05.pdf'.
 """
 import os
+import sys
 from datetime import datetime
 
 # --- Definición de Rutas Base ---
-# __file__ es la ruta al archivo config.py
-# os.path.dirname(__file__) es la ruta a la carpeta que contiene config.py (debería ser 'ecoreport_semi')
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-RESOURCES_DIR = os.path.join(PROJECT_ROOT, "resources") # Carpeta 'resources' en la raíz de 'ecoreport_semi'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) 
+# RESOURCES_DIR_DEV debe apuntar a ecoreport_semi/resources
+RESOURCES_DIR_DEV = os.path.join(PROJECT_ROOT, "resources")
 LOG_DIR = os.path.join(PROJECT_ROOT, "logs") # Directorio para logs
 
 # Asegurar que el directorio de logs existe
@@ -32,6 +32,23 @@ if not os.path.exists(LOG_DIR):
             # Por ahora, se continuará y el logger podría fallar.
             pass
 
+# --- FUNCIÓN HELPER PARA RUTAS DE RECURSOS ---
+def resource_path(relative_path: str) -> str:
+    """
+    Obtiene la ruta absoluta a un recurso, funciona para desarrollo y para PyInstaller.
+    Asume que los recursos están en una carpeta 'resources' al mismo nivel que este
+    archivo config.py (si estás en desarrollo) o en una carpeta 'resources'
+    dentro del bundle de PyInstaller.
+    """
+    try:
+        # PyInstaller crea una carpeta temporal y guarda la ruta en sys._MEIPASS
+        # Los recursos se empaquetaron en una subcarpeta 'resources' dentro de _MEIPASS
+        base_path = os.path.join(sys._MEIPASS, "resources")
+    except AttributeError:
+        # sys._MEIPASS no está definido, así que estamos en desarrollo
+        base_path = RESOURCES_DIR_DEV # Usa la ruta de desarrollo
+
+    return os.path.join(base_path, relative_path)
 
 LOG_FILE_PATH = os.path.join(LOG_DIR, f"ecoreport_log_{datetime.now().strftime('%Y%m%d')}.log")
 

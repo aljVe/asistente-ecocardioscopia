@@ -9,9 +9,13 @@ import subprocess
 import shutil
 import sys
 
+
 APP_NAME = "EcoReportSEMI"
 ENTRY_POINT = "main.py" # Script principal de la aplicación
 ICON_FILE = os.path.join("resources", "icon.ico") # Asegúrate que este archivo exista
+SOURCE_SUBFOLDER = "ecoreport_semi"
+RESOURCES_FOLDER_SOURCE = os.path.join(SOURCE_SUBFOLDER, "resources") # Ej: "ecoreport_semi/resources"
+RESOURCES_FOLDER_DEST_IN_BUNDLE = "resources" # <<< --- Este es el nombre de la carpeta DENTRO del bundle
 
 def check_dependencies():
     """Verifica e intenta instalar dependencias faltantes."""
@@ -60,10 +64,15 @@ def build_executable():
         # '--noconfirm', # Sobrescribir sin preguntar
     ]
 
-    if os.path.exists(ICON_FILE):
-        pyinstaller_options.extend(['--icon', ICON_FILE])
+    if os.path.exists(RESOURCES_FOLDER_SOURCE):
+        # El formato es "origen_ruta_completa{os.pathsep}destino_en_bundle"
+        # os.pathsep es ';' en Windows, ':' en Linux/macOS
+        # PyInstaller recomienda usar ':' como separador en la opción y él lo maneja.
+        # Si RESOURCES_FOLDER_SOURCE es "ecoreport_semi/resources" y quieres que se llame "resources" en el bundle:
+        pyinstaller_options.extend(['--add-data', f"{RESOURCES_FOLDER_SOURCE}{os.pathsep}{RESOURCES_FOLDER_DEST_IN_BUNDLE}"])
+        print(f"Incluyendo datos de la carpeta: {RESOURCES_FOLDER_SOURCE} como '{RESOURCES_FOLDER_DEST_IN_BUNDLE}' en el bundle.")
     else:
-        print(f"Advertencia: Archivo de icono no encontrado en {ICON_FILE}. Se usará el icono por defecto.")
+        print(f"Advertencia: Carpeta de recursos no encontrada en {RESOURCES_FOLDER_SOURCE}.")
 
        # Para incluir la carpeta 'resources'
     # La ruta a 'resources' debe ser relativa al script build.py o absoluta.
